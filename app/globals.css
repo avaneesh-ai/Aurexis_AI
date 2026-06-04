@@ -1,0 +1,305 @@
+/* =========================================================================
+   Aurexis design system — electric blue → violet, dual theme.
+   Theme is driven by  data-theme="dark" | "light"  on <html>.
+   Existing components reference --gold* names; those are kept as ALIASES
+   that point at the accent palette, so the whole app re-themes for free.
+   ========================================================================= */
+
+:root {
+  --radius: 18px;
+  --radius-sm: 12px;
+  --display: "Sora", "Hanken Grotesk", system-ui, sans-serif;
+  --body: "Hanken Grotesk", system-ui, sans-serif;
+
+  /* brand spectrum (constant across themes) */
+  --brand-blue: #4f8cff;
+  --brand-cyan: #38d6ff;
+  --brand-violet: #a06bff;
+  --grad: linear-gradient(135deg, var(--brand-cyan) 0%, var(--brand-blue) 48%, var(--brand-violet) 100%);
+  --grad-soft: linear-gradient(135deg, rgba(56, 214, 255, 0.16), rgba(160, 107, 255, 0.16));
+}
+
+/* ----------------------------- DARK (default) -------------------------- */
+:root,
+:root[data-theme="dark"] {
+  --bg: #05060f;
+  --bg-2: #090b1a;
+  --panel: rgba(20, 26, 52, 0.5);
+  --panel-solid: #0d1126;
+  --line: rgba(125, 150, 255, 0.16);
+  --line-strong: rgba(130, 155, 255, 0.34);
+
+  --accent: #5b8cff;
+  --accent-2: #a06bff;
+  --accent-bright: #93b4ff;
+  --accent-weak: rgba(91, 140, 255, 0.14);
+  --accent-line: rgba(91, 140, 255, 0.38);
+
+  --text: #eef1ff;
+  --text-2: #aab2dd;
+  --text-3: #6c75a6;
+  --danger: #ff7a8a;
+  --ok: #5fe0b0;
+
+  --on-accent: #050814;
+  --glow: 0 0 24px -4px rgba(91, 140, 255, 0.55);
+  --shadow: 0 30px 80px -34px rgba(0, 0, 0, 0.85);
+
+  /* gold aliases -> accent (legacy var names used across components) */
+  --gold: var(--accent);
+  --gold-bright: var(--accent-bright);
+  --gold-deep: var(--accent-2);
+  --ink: var(--on-accent);
+
+  --bg-image: url("/bg-dark.png");
+  --bg-scrim: linear-gradient(180deg, rgba(5, 6, 15, 0.7), rgba(5, 6, 15, 0.88));
+}
+
+/* -------------------------------- LIGHT -------------------------------- */
+:root[data-theme="light"] {
+  --bg: #eef1fb;
+  --bg-2: #e7ecf9;
+  --panel: rgba(255, 255, 255, 0.62);
+  --panel-solid: #ffffff;
+  --line: rgba(70, 92, 200, 0.16);
+  --line-strong: rgba(80, 100, 210, 0.3);
+
+  --accent: #4f6bff;
+  --accent-2: #9b5cff;
+  --accent-bright: #4453e6;
+  --accent-weak: rgba(79, 107, 255, 0.1);
+  --accent-line: rgba(79, 107, 255, 0.32);
+
+  --text: #161a30;
+  --text-2: #474d70;
+  --text-3: #838aaa;
+  --danger: #d6455a;
+  --ok: #1f9d72;
+
+  --on-accent: #ffffff;
+  --glow: 0 0 24px -6px rgba(79, 107, 255, 0.4);
+  --shadow: 0 26px 70px -36px rgba(40, 50, 110, 0.4);
+
+  --gold: var(--accent);
+  --gold-bright: var(--accent-bright);
+  --gold-deep: var(--accent-2);
+  --ink: var(--on-accent);
+
+  --bg-image: url("/bg-light.png");
+  --bg-scrim: linear-gradient(180deg, rgba(244, 246, 253, 0.66), rgba(244, 246, 253, 0.84));
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+body {
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  background: var(--bg);
+  transition: color 0.4s ease, background 0.4s ease;
+}
+
+/* photographic background + scrim, fixed behind everything */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image: var(--bg-scrim), var(--bg-image);
+  background-size: cover, cover;
+  background-position: center, center;
+  background-attachment: fixed, fixed;
+  transition: opacity 0.5s ease;
+}
+
+/* drifting aurora glow layered on top of the photo for depth */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 40% at 18% 22%, rgba(56, 214, 255, 0.12), transparent 70%),
+    radial-gradient(42% 42% at 84% 78%, rgba(160, 107, 255, 0.14), transparent 70%);
+  animation: drift 22s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(3%, 2%, 0) scale(1.08);
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+a {
+  color: var(--accent-bright);
+}
+button {
+  font-family: inherit;
+}
+::selection {
+  background: rgba(91, 140, 255, 0.32);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent-line);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* ----------------------------- shared atoms ---------------------------- */
+.btn {
+  border: 1px solid var(--line-strong);
+  background: var(--grad-soft);
+  color: var(--text);
+  padding: 11px 18px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: transform 0.15s ease, border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+  box-shadow: var(--glow);
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.btn-primary {
+  background: var(--grad);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 14px 36px -14px rgba(91, 140, 255, 0.7);
+}
+.btn-primary:hover {
+  border-color: transparent;
+  filter: brightness(1.06);
+}
+.btn-ghost {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--text-2);
+}
+.input {
+  width: 100%;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  padding: 13px 15px;
+  font-size: 15px;
+  font-family: inherit;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-weak);
+}
+.label {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 7px;
+  display: block;
+}
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  backdrop-filter: blur(18px) saturate(1.1);
+  -webkit-backdrop-filter: blur(18px) saturate(1.1);
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--accent-line);
+  color: var(--accent-bright);
+  background: var(--accent-weak);
+}
+
+/* gradient wordmark helper */
+.grad-text {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.rise {
+  animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.fade {
+  animation: fade 0.5s ease both;
+}
